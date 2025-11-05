@@ -1,0 +1,44 @@
+:root {
+    --green:#10b981;--dark:#1a1a1a;--card:#2d2d2d;--side:#242424;--text:#fff;--muted:#a0a0a0;
+}
+body {
+    background:var(--dark);
+    color:var(--text);
+    font-family:'Segoe UI',sans-serif;
+    margin:0;padding:0;
+}
+.hidden{display:none;}
+#loginPage {
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(135deg,#1a1a1a,#2d2d2d);
+}
+.login-card {
+    background:var(--card);
+    padding:40px;
+    border-radius:20px;
+    width:350px;
+    text-align:center;
+    border:1px solid rgba(16,185,129,.3);
+}
+.login-card input {
+    background:var(--dark);
+    border:1px solid #3a3a3a;
+    color:var(--text);
+    border-radius:8px;
+    margin-bottom:15px;
+    padding:10px;
+}
+.btn-main {
+    background:var(--green);
+    border:none;
+    border-radius:10px;
+    padding:8px 20px;
+    color:white;
+}
+.btn-main:hover {background:#059669;}
+.sidebar {background:var(--side);min-height:100vh;}
+.nav-link {color:var(--muted);display:block;padding:15px 25px;}
+.nav-link:hover,.nav-link.active {background:var(--green);color:white;border-radius:12px;}

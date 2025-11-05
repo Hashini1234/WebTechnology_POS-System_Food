@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Restaurant POS SPA</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginPage">
+  <div class="login-card">
+    <h2><i class="fa-solid fa-utensils me-2"></i>POS Login</h2>
+    <input id="username" class="form-control" placeholder="Username" required>
+    <input id="password" type="password" class="form-control" placeholder="Password" required>
+    <button id="loginBtn">Login</button>
+    <small class="text-muted d-block mt-2">Demo: admin / 1234</small>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <nav class="navbar navbar-dark px-3">
+    <span class="navbar-brand"><i class="fa-solid fa-utensils me-2"></i>POS System</span>
+    <button class="btn btn-outline-light btn-sm" id="logoutBtn">Logout</button>
+  </nav>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-2 sidebar p-0">
+        <ul class="nav flex-column mt-3">
+          <li><a class="nav-link active" data-page="dashboard">Dashboard</a></li>
+          <li><a class="nav-link" data-page="items">Items</a></li>
+          <li><a class="nav-link" data-page="customers">Customers</a></li>
+          <li><a class="nav-link" data-page="orders">Orders</a></li>
+          <li><a class="nav-link" data-page="history">Order History</a></li>
+        </ul>
+      </div>
+
+      <div class="col-md-10 content">
+        <!-- DASHBOARD -->
+        <div id="dashboard" class="page">
+          <h3>Dashboard</h3>
+          <div class="row mt-4 text-center">
+            <div class="col-md-3"><div class="card bg-dark p-3"><h4 id="countItems">0</h4><p>Items</p></div></div>
+            <div class="col-md-3"><div class="card bg-dark p-3"><h4 id="countCustomers">0</h4><p>Customers</p></div></div>
+            <div class="col-md-3"><div class="card bg-dark p-3"><h4 id="countOrders">0</h4><p>Orders</p></div></div>
+            <div class="col-md-3"><div class="card bg-dark p-3"><h4 id="totalRevenue">$0</h4><p>Revenue</p></div></div>
+          </div>
+        </div>
+
+        <!-- ITEMS -->
+        <div id="items" class="page hidden">
+          <h3>Items</h3>
+          <form id="itemForm" class="mb-3">
+            <input id="itemName" class="form-control mb-2" placeholder="Item Name" required>
+            <input id="itemPrice" type="number" class="form-control mb-2" placeholder="Price" required>
+            <input id="itemQty" type="number" class="form-control mb-2" placeholder="Quantity" required>
+            <button type="submit" class="btn btn-main">Save Item</button>
+          </form>
+          <table class="table table-dark table-hover" id="itemTable">
+            <thead><tr><th>Name</th><th>Price</th><th>Qty</th><th>Actions</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <!-- CUSTOMERS -->
+        <div id="customers" class="page hidden">
+          <h3>Customers</h3>
+          <form id="customerForm" class="mb-3">
+            <input id="customerName" class="form-control mb-2" placeholder="Customer Name" required>
+            <input id="customerEmail" type="email" class="form-control mb-2" placeholder="Email" required>
+            <button type="submit" class="btn btn-main">Save Customer</button>
+          </form>
+          <table class="table table-dark table-hover" id="customerTable">
+            <thead><tr><th>Name</th><th>Email</th><th>Actions</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <!-- ORDERS -->
+        <div id="orders" class="page hidden">
+          <h3>Place Order</h3>
+          <form id="orderForm">
+            <select id="orderCustomer" class="form-select mb-2" required></select>
+            <select id="orderItem" class="form-select mb-2" required></select>
+            <input id="orderQty" type="number" class="form-control mb-2" placeholder="Quantity" min="1" required>
+            <button type="submit" class="btn btn-main">Place Order</button>
+          </form>
+        </div>
+
+        <!-- HISTORY -->
+        <div id="history" class="page hidden">
+          <h3>Order History</h3>
+          <table class="table table-dark table-hover" id="historyTable">
+            <thead><tr><th>Customer</th><th>Item</th><th>Qty</th><th>Total</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="js/app.js"></script>
+
+</body>
+</html>

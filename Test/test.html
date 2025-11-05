@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant POS SPA</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root{
+            --green:#10b981;--dark:#1a1a1a;--card:#2d2d2d;--side:#242424;--text:#fff;--muted:#a0a0a0;
+        }
+        body{background:var(--dark);color:var(--text);font-family:'Segoe UI',sans-serif;margin:0;padding:0;}
+        .hidden{display:none;}
+        /* login */
+        #loginPage{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1a1a1a,#2d2d2d);}
+        .login-card{background:var(--card);padding:40px;border-radius:20px;width:350px;text-align:center;border:1px solid rgba(16,185,129,.3);}
+        .login-card h2{margin-bottom:20px;color:var(--green);}
+        .login-card input{background:var(--dark);border:1px solid #3a3a3a;color:var(--text);border-radius:8px;margin-bottom:15px;padding:10px;}
+        .login-card button{background:var(--green);border:none;width:100%;padding:10px;border-radius:10px;font-weight:600;}
+        .login-card button:hover{background:#059669;}
+        /* layout */
+        #app{display:none;}
+        .navbar{background:var(--side)!important;}
+        .sidebar{background:var(--side);min-height:calc(100vh - 56px);}
+        .sidebar .nav-link{color:var(--muted);padding:15px 25px;border-radius:12px;}
+        .sidebar .nav-link:hover,.sidebar .nav-link.active{background:var(--green);color:#fff;}
+        .content{padding:30px;}
+        .table-container{background:var(--card);padding:20px;border-radius:15px;}
+        .table thead{background:var(--dark);}
+        .table th{color:var(--green);}
+        .btn-main{background:var(--green);border:none;border-radius:10px;padding:8px 20px;}
+        .btn-main:hover{background:#059669;}
+        .modal-content{background:var(--card);color:var(--text);border:1px solid #3a3a3a;}
+        .form-control, .form-select{background:var(--dark);color:var(--text);border:1px solid #3a3a3a;}
+        .form-control:focus,.form-select:focus{border-color:var(--green);box-shadow:0 0 0 .2rem rgba(16,185,129,.25);}
+    </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginPage">
+    <div class="login-card">
+        <h2><i class="fa-solid fa-utensils me-2"></i>POS Login</h2>
+        <input id="username" class="form-control" placeholder="Username" required>
+        <input id="password" type="password" class="form-control" placeholder="Password" required>
+        <button id="loginBtn">Login</button>
+        <p class="mt-3"><a href="#" id="forgotLink" style="color:var(--green)">Forgot Password?</a></p>
+        <small class="text-muted">Demo: admin / 1234</small>
+    </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+    <nav class="navbar navbar-dark px-3">
+        <span class="navbar-brand"><i class="fa-solid fa-utensils me-2"></i>POS System</span>
+        <button class="btn btn-outline-light btn-sm" id="logoutBtn">Logout</button>
+    </nav>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2 sidebar p-0">
+                <ul class="nav flex-column mt-3">
+                    <li><a class="nav-link active" data-page="dashboard">Dashboard</a></li>
+                    <li><a class="nav-link" data-page="items">Items</a></li>
+                    <li><a class="nav-link" data-page="customers">Customers</a></li>
+                    <li><a class="nav-link" data-page="orders">Orders</a></li>
+                    <li><a class="nav-link" data-page="history">Order History</a></li>
+                </ul>
+            </div>
+            <div class="col-md-10 content">
+                <!-- DASHBOARD -->
+                <div id="dashboard" class="page">
+                    <h3>Dashboard</h3>
+                    <div class="row mt-4 text-center">
+                        <div class="col-md-3"><div class="card bg-dark p-3"><h4 id="countItems">0</h4><p>Items</p></div></div>
+                        <div class="col-md-3"><div class="card bg-dark p-3"><h4 id="countCustomers">0</h4><p>Customers</p></div></div>
+                        <div class="col-md-3"><div class="card bg-dark p-3"><h4 id="countOrders">0</h4><p>Orders</p></div></div>
+                        <div class="col-md-3"><div class="card bg-dark p-3"><h4 id="totalRevenue">$0</h4><p>Revenue</p></div></div>
+                    </div>
+                </div>
+
+                <!-- ITEMS -->
+                <div id="items" class="page hidden">
+                    <div class="d-flex justify-content-between mb-3"><h3>Items</h3><button class="btn-main" id="addItemBtn">Add Item</button></div>
+                    <div class="table-container">
+                        <table class="table table-dark table-hover">
+                            <thead><tr><th>ID</th><th>Name</th><th>Price</th><th>Qty</th><th>Action</th></tr></thead>
+                            <tbody id="itemTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- CUSTOMERS -->
+                <div id="customers" class="page hidden">
+                    <div class="d-flex justify-content-between mb-3"><h3>Customers</h3><button class="btn-main" id="addCustomerBtn">Add Customer</button></div>
+                    <div class="table-container">
+                        <table class="table table-dark table-hover">
+                            <thead><tr><th>ID</th><th>Name</th><th>Phone</th><th>Action</th></tr></thead>
+                            <tbody id="customerTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ORDERS -->
+                <div id="orders" class="page hidden">
+                    <h3>Place Order</h3>
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <label>Customer</label>
+                            <select id="orderCustomer" class="form-select mb-2"></select>
+                            <label>Item</label>
+                            <select id="orderItem" class="form-select mb-2"></select>
+                            <label>Quantity</label>
+                            <input id="orderQty" type="number" class="form-control mb-2" min="1">
+                            <button class="btn-main" id="placeOrderBtn">Place Order</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HISTORY -->
+                <div id="history" class="page hidden">
+                    <h3>Order History</h3>
+                    <div class="table-container">
+                        <table class="table table-dark table-hover">
+                            <thead><tr><th>ID</th><th>Customer</th><th>Item</th><th>Qty</th><th>Total</th></tr></thead>
+                            <tbody id="historyTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ITEM MODAL -->
+<div class="modal fade" id="itemModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title">Item</h5><button class="btn-close" data-bs-dismiss="modal"></button></div>
+    <div class="modal-body">
+        <input type="hidden" id="itemId">
+        <input id="itemName" class="form-control mb-2" placeholder="Item Name">
+        <input id="itemPrice" type="number" class="form-control mb-2" placeholder="Price">
+        <input id="itemQty" type="number" class="form-control mb-2" placeholder="Quantity">
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn-main" id="saveItem">Save</button>
+    </div>
+</div></div></div>
+
+<!-- CUSTOMER MODAL -->
+<div class="modal fade" id="customerModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title">Customer</h5><button class="btn-close" data-bs-dismiss="modal"></button></div>
+    <div class="modal-body">
+        <input type="hidden" id="custId">
+        <input id="custName" class="form-control mb-2" placeholder="Customer Name">
+        <input id="custPhone" class="form-control mb-2" placeholder="Phone">
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn-main" id="saveCustomer">Save</button>
+    </div>
+</div></div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script>
+    const user={u:"admin",p:"1234"};
+    const items=[],customers=[],orders=[];
+    let itemId=1,custId=1,orderId=1;
+    const loginBtn=document.getElementById("loginBtn");
+    const logoutBtn=document.getElementById("logoutBtn");
+    const loginPage=document.getElementById("loginPage");
+    const app=document.getElementById("app");
+    loginBtn.onclick=()=>{const u=document.getElementById("username").value,p=document.getElementById("password").value;
+        if(u===user.u&&p===user.p){loginPage.style.display="none";app.style.display="block";updateStats();renderAll();}
+        else alert("Invalid credentials!");
+    };
+    logoutBtn.onclick=()=>{app.style.display="none";loginPage.style.display="flex";};
+    document.querySelectorAll(".sidebar .nav-link").forEach(l=>l.onclick=()=>{document.querySelectorAll(".nav-link").forEach(a=>a.classList.remove("active"));l.classList.add("active");document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden"));document.getElementById(l.dataset.page).classList.remove("hidden");});
+
+    function renderItems(){
+        const t=document.getElementById("itemTable");t.innerHTML="";
+        items.forEach(it=>{
+            t.innerHTML+=`<tr><td>${it.id}</td><td>${it.name}</td><td>${it.price}</td><td>${it.qty}</td>
+   <td><button class='btn btn-sm btn-warning me-1' onclick='editItem(${it.id})'>Edit</button>
+   <button class='btn btn-sm btn-danger' onclick='delItem(${it.id})'>Del</button></td></tr>`;
+        });
+        updateStats();
+        fillItemSelect();
+    }
+    function renderCustomers(){
+        const t=document.getElementById("customerTable");t.innerHTML="";
+        customers.forEach(c=>{
+            t.innerHTML+=`<tr><td>${c.id}</td><td>${c.name}</td><td>${c.phone}</td>
+  <td><button class='btn btn-sm btn-warning me-1' onclick='editCustomer(${c.id})'>Edit</button>
+  <button class='btn btn-sm btn-danger' onclick='delCustomer(${c.id})'>Del</button></td></tr>`;
+        });
+        updateStats();
+        fillCustomerSelect();
+    }
+    function renderHistory(){
+        const t=document.getElementById("historyTable");t.innerHTML="";
+        orders.forEach(o=>{
+            t.innerHTML+=`<tr><td>${o.id}</td><td>${o.customer}</td><td>${o.item}</td><td>${o.qty}</td><td>$${o.total}</td></tr>`;
+        });
+        updateStats();
+    }
+    function updateStats(){
+        document.getElementById("countItems").innerText=items.length;
+        document.getElementById("countCustomers").innerText=customers.length;
+        document.getElementById("countOrders").innerText=orders.length;
+        let rev=0;orders.forEach(o=>rev+=o.total);document.getElementById("totalRevenue").innerText="$"+rev;
+    }
+    function renderAll(){renderItems();renderCustomers();renderHistory();}
+    function fillItemSelect(){const sel=document.getElementById("orderItem");sel.innerHTML="";items.forEach(i=>sel.innerHTML+=`<option value="${i.id}">${i.name}</option>`);}
+    function fillCustomerSelect(){const sel=document.getElementById("orderCustomer");sel.innerHTML="";customers.forEach(c=>sel.innerHTML+=`<option value="${c.id}">${c.name}</option>`);}
+
+    document.getElementById("addItemBtn").onclick=()=>{document.getElementById("itemId").value="";document.getElementById("itemName").value="";document.getElementById("itemPrice").value="";document.getElementById("itemQty").value="";new bootstrap.Modal("#itemModal").show();};
+    document.getElementById("saveItem").onclick=()=>{
+        const id=document.getElementById("itemId").value,name=document.getElementById("itemName").value,price=parseFloat(document.getElementById("itemPrice").value),qty=parseInt(document.getElementById("itemQty").value);
+        if(!name||price<=0||qty<0)return alert("Invalid inputs!");
+        if(id){const it=items.find(i=>i.id==id);it.name=name;it.price=price;it.qty=qty;}
+        else items.push({id:itemId++,name,price,qty});
+        renderItems();bootstrap.Modal.getInstance(document.getElementById("itemModal")).hide();
+    };
+    function editItem(id){const it=items.find(i=>i.id==id);document.getElementById("itemId").value=it.id;document.getElementById("itemName").value=it.name;document.getElementById("itemPrice").value=it.price;document.getElementById("itemQty").value=it.qty;new bootstrap.Modal("#itemModal").show();}
+    function delItem(id){if(confirm("Delete item?")){const i=items.findIndex(x=>x.id==id);items.splice(i,1);renderItems();}}
+
+    document.getElementById("addCustomerBtn").onclick=()=>{document.getElementById("custId").value="";document.getElementById("custName").value="";document.getElementById("custPhone").value="";new bootstrap.Modal("#customerModal").show();};
+    document.getElementById("saveCustomer").onclick=()=>{
+        const id=document.getElementById("custId").value,name=document.getElementById("custName").value,phone=document.getElementById("custPhone").value;
+        if(!name||!phone)return alert("Invalid inputs!");
+        if(id){const c=customers.find(x=>x.id==id);c.name=name;c.phone=phone;}
+        else customers.push({id:custId++,name,phone});
+        renderCustomers();bootstrap.Modal.getInstance(document.getElementById("customerModal")).hide();
+    };
+    function editCustomer(id){const c=customers.find(x=>x.id==id);document.getElementById("custId").value=c.id;document.getElementById("custName").value=c.name;document.getElementById("custPhone").value=c.phone;new bootstrap.Modal("#customerModal").show();}
+    function delCustomer(id){if(confirm("Delete customer?")){const i=customers.findIndex(x=>x.id==id);customers.splice(i,1);renderCustomers();}}
+
+    document.getElementById("placeOrderBtn").onclick=()=>{
+        const custIdVal=parseInt(document.getElementById("orderCustomer").value);
+        const itemIdVal=parseInt(document.getElementById("orderItem").value);
+        const qty=parseInt(document.getElementById("orderQty").value);
+        if(!custIdVal||!itemIdVal||qty<=0)return alert("Invalid order input!");
+        const cust=customers.find(c=>c.id===custIdVal),item=items.find(i=>i.id===itemIdVal);
+        if(!cust||!item)return alert("Invalid data!");
+        if(item.qty<qty)return alert("Not enough stock!");
+        const total=item.price*qty;
+        item.qty-=qty;
+        orders.push({id:orderId++,customer:cust.name,item:item.name,qty,total});
+        alert("Order placed!");
+        renderItems();renderHistory();
+    };
+</script>
+</body>
+</html>
+
