@@ -1,13 +1,14 @@
 import {updateDashboard} from "../controller/dashboardController.js";
+import {initItemPage} from "../controller/itemController.js";
+import {initCustomerPage} from "../controller/customerController.js";
+import {initOrderPage} from "../controller/orderController.js";
 
 export function showPage(pageId) {
     document.querySelectorAll(".page").forEach(p => p.classList.add("hidden"));
-    const page = document.getElementById(pageId);
-    if (page) page.classList.remove("hidden");
-
-    document.querySelectorAll(".nav-link").forEach(a => a.classList.remove("active"));
-    const link = document.querySelector(`.nav-link[data-page="${pageId}"]`);
-    if (link) link.classList.add("active");
+    document.getElementById(pageId).classList.remove("hidden");
 
     if (pageId === "dashboard") updateDashboard();
+    if (pageId === "items") initItemPage();
+    if (pageId === "customers") initCustomerPage();
+    if (pageId === "orders" || pageId === "orderHistory") initOrderPage();
 }

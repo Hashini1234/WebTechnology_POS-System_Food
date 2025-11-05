@@ -1,44 +1,72 @@
-:root {
-    --green:#10b981;--dark:#1a1a1a;--card:#2d2d2d;--side:#242424;--text:#fff;--muted:#a0a0a0;
-}
 body {
-    background:var(--dark);
-    color:var(--text);
-    font-family:'Segoe UI',sans-serif;
-    margin:0;padding:0;
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: #20232b;
+    color: white;
+    display: flex;
 }
-.hidden{display:none;}
-#loginPage {
-    min-height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:linear-gradient(135deg,#1a1a1a,#2d2d2d);
+
+.sidebar {
+    width: 200px;
+    background: #12151c;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+}
+
+.sidebar li {
+    text-align: center;
+    padding: 15px;
+    color: #ccc;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.sidebar li.active, .sidebar li:hover {
+    background: #f97316;
+    color: #fff;
+}
+
+.content {
+    flex: 1;
+    padding: 30px;
+    background: #20232b;
+}
+
+.hidden {
+    display: none;
+}
+
+.logout-btn {
+    margin-top: auto;
+    margin-bottom: 20px;
+    background: #f97316;
+    border: none;
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+}
+
 .login-card {
-    background:var(--card);
-    padding:40px;
-    border-radius:20px;
-    width:350px;
-    text-align:center;
-    border:1px solid rgba(16,185,129,.3);
+    background: #12151c;
+    color: white;
+    padding: 40px;
+    border-radius: 15px;
+    width: 300px;
+    text-align: center;
+    margin: 150px auto;
 }
-.login-card input {
-    background:var(--dark);
-    border:1px solid #3a3a3a;
-    color:var(--text);
-    border-radius:8px;
-    margin-bottom:15px;
-    padding:10px;
+
+input, select {
+    padding: 8px;
+    margin-right: 5px;
+    border-radius: 5px;
+    border: none;
 }
-.btn-main {
-    background:var(--green);
-    border:none;
-    border-radius:10px;
-    padding:8px 20px;
-    color:white;
-}
-.btn-main:hover {background:#059669;}
-.sidebar {background:var(--side);min-height:100vh;}
-.nav-link {color:var(--muted);display:block;padding:15px 25px;}
-.nav-link:hover,.nav-link.active {background:var(--green);color:white;border-radius:12px;}
