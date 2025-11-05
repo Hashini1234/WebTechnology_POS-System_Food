@@ -1,4 +1,4 @@
-export class Order {
+export class OrderModel {
     constructor(id, customer, item, qty, total) {
         this.id = id;
         this.customer = customer;
