@@ -1,15 +1,14 @@
 body {
-    margin: 0;
     font-family: 'Poppins', sans-serif;
     background: #20232b;
     color: white;
-    display: flex;
 }
 
 .sidebar {
     width: 200px;
     background: #12151c;
     min-height: 100vh;
+    position: fixed;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -18,7 +17,7 @@ body {
 .sidebar ul {
     list-style: none;
     padding: 0;
-    width: 100%;
+    margin-top: 30px;
 }
 
 .sidebar li {
@@ -31,42 +30,29 @@ body {
 
 .sidebar li.active, .sidebar li:hover {
     background: #f97316;
-    color: #fff;
+    color: white;
 }
 
 .content {
-    flex: 1;
+    margin-left: 200px;
     padding: 30px;
     background: #20232b;
-}
-
-.hidden {
-    display: none;
-}
-
-.logout-btn {
-    margin-top: auto;
-    margin-bottom: 20px;
-    background: #f97316;
-    border: none;
-    color: white;
-    padding: 10px;
-    border-radius: 10px;
+    min-height: 100vh;
 }
 
 .login-card {
     background: #12151c;
-    color: white;
     padding: 40px;
     border-radius: 15px;
-    width: 300px;
+    width: 350px;
     text-align: center;
     margin: 150px auto;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
-input, select {
-    padding: 8px;
-    margin-right: 5px;
-    border-radius: 5px;
-    border: none;
+.page {
+    display: none;
+}
+.page.active {
+    display: block;
 }

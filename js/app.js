@@ -1,36 +1,42 @@
-import {showPage} from "./script.js";
-import {updateDashboard} from "../controller/dashboardController.js";
-import {initItemPage} from "../controller/itemController.js";
-import {initCustomerPage} from "../controller/customerController.js";
-import {initOrderPage} from "../controller/orderController.js";
+import { user } from "../db/database.js";
+import { updateDashboard } from "../controller/dashboardController.js";
+import { renderItems } from "../controller/itemController.js";
+import { renderCustomers } from "../controller/customerController.js";
+import { renderHistory } from "../controller/orderController.js";
 
-const user = {username: "admin", password: "1234"};
+const loginBtn = document.getElementById("loginBtn");
+const logoutBtn = document.getElementById("logoutBtn");
 
-document.getElementById("loginBtn").onclick = () => {
-    const u = document.getElementById("username").value.trim();
-    const p = document.getElementById("password").value.trim();
+loginBtn.onclick = () => {
+    const u = username.value.trim();
+    const p = password.value.trim();
     if (u === user.username && p === user.password) {
-        document.getElementById("loginPage").style.display = "none";
-        document.getElementById("app").style.display = "flex";
+        loginPage.style.display = "none";
+        app.style.display = "block";
         showPage("dashboard");
-        updateDashboard();
-    } else {
-        alert("Invalid username or password!");
-    }
+    } else alert("Invalid credentials!");
 };
 
-document.getElementById("logoutBtn").onclick = () => {
-    document.getElementById("app").style.display = "none";
-    document.getElementById("loginPage").style.display = "block";
+logoutBtn.onclick = () => {
+    app.style.display = "none";
+    loginPage.style.display = "block";
+    username.value = "";
+    password.value = "";
 };
+
+function showPage(id) {
+    document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+    if (id === "dashboard") updateDashboard();
+    if (id === "items") renderItems();
+    if (id === "customers") renderCustomers();
+    if (id === "history") renderHistory();
+}
 
 document.querySelectorAll(".sidebar li").forEach(li => {
     li.addEventListener("click", () => {
         document.querySelectorAll(".sidebar li").forEach(x => x.classList.remove("active"));
         li.classList.add("active");
         showPage(li.dataset.page);
-        if (li.dataset.page === "items") initItemPage();
-        if (li.dataset.page === "customers") initCustomerPage();
-        if (li.dataset.page === "orders" || li.dataset.page === "history") initOrderPage();
     });
 });

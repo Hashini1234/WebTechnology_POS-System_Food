@@ -13,18 +13,18 @@
 <!-- LOGIN PAGE -->
 <div id="loginPage">
   <div class="login-card">
-    <h2>POS Login</h2>
-    <input id="username" placeholder="Username" class="form-control mb-2">
-    <input id="password" type="password" placeholder="Password" class="form-control mb-2">
+    <h2><i class="fa-solid fa-utensils"></i> POS Login</h2>
+    <input id="username" placeholder="Username" class="form-control mb-3">
+    <input id="password" type="password" placeholder="Password" class="form-control mb-3">
     <button id="loginBtn" class="btn btn-primary w-100">Login</button>
-    <small class="text-muted d-block mt-2">Username: admin | Password: 1234</small>
+    <small class="text-muted d-block mt-3">Username: admin | Password: 1234</small>
   </div>
 </div>
 
 <!-- MAIN APP -->
-<div id="app" style="display:none;">
+<div id="app">
   <div class="sidebar">
-    <h3 class="logo text-center text-warning mt-3"><i class="fa-solid fa-utensils"></i> POS</h3>
+    <h3 class="logo text-center"><i class="fa-solid fa-utensils"></i> POS</h3>
     <ul>
       <li data-page="dashboard" class="active">Dashboard</li>
       <li data-page="items">Items</li>
@@ -32,70 +32,26 @@
       <li data-page="orders">Orders</li>
       <li data-page="history">Order History</li>
     </ul>
-    <button class="logout-btn" id="logoutBtn">Logout</button>
+    <button class="logout-btn" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
   </div>
 
   <div class="content">
-    <section id="dashboard" class="page active">
-      <h2>Dashboard</h2>
-      <div class="row text-center mt-4">
-        <div class="col-md-3"><div class="card bg-dark p-3"><h4 id="countItems">0</h4><p>Items</p></div></div>
-        <div class="col-md-3"><div class="card bg-dark p-3"><h4 id="countCustomers">0</h4><p>Customers</p></div></div>
-        <div class="col-md-3"><div class="card bg-dark p-3"><h4 id="countOrders">0</h4><p>Orders</p></div></div>
-        <div class="col-md-3"><div class="card bg-dark p-3"><h4 id="totalRevenue">$0</h4><p>Revenue</p></div></div>
-      </div>
-    </section>
-
-    <section id="items" class="page hidden">
-      <h2>Items</h2>
-      <form id="itemForm" class="mb-3">
-        <input id="itemName" placeholder="Item Name" required>
-        <input id="itemPrice" type="number" placeholder="Price" required>
-        <input id="itemQty" type="number" placeholder="Qty" required>
-        <button class="btn btn-success">Add</button>
-      </form>
-      <table class="table table-dark table-striped">
-        <thead><tr><th>Name</th><th>Price</th><th>Qty</th><th>Action</th></tr></thead>
-        <tbody id="itemTable"></tbody>
-      </table>
-    </section>
-
-    <section id="customers" class="page hidden">
-      <h2>Customers</h2>
-      <form id="customerForm" class="mb-3">
-        <input id="customerName" placeholder="Name" required>
-        <input id="customerEmail" type="email" placeholder="Email" required>
-        <button class="btn btn-success">Add</button>
-      </form>
-      <table class="table table-dark table-striped">
-        <thead><tr><th>Name</th><th>Email</th><th>Action</th></tr></thead>
-        <tbody id="customerTable"></tbody>
-      </table>
-    </section>
-
-    <section id="orders" class="page hidden">
-      <h2>Orders</h2>
-      <form id="orderForm">
-        <select id="orderCustomer" required></select>
-        <select id="orderItem" required></select>
-        <input id="orderQty" type="number" placeholder="Quantity" required>
-        <button class="btn btn-success">Place Order</button>
-      </form>
-    </section>
-
-    <section id="history" class="page hidden">
-      <h2>Order History</h2>
-      <table class="table table-dark table-striped">
-        <thead><tr><th>Customer</th><th>Item</th><th>Qty</th><th>Total</th></tr></thead>
-        <tbody id="historyTable"></tbody>
-      </table>
-    </section>
+    <section id="dashboard" class="page active"></section>
+    <section id="items" class="page"></section>
+    <section id="customers" class="page"></section>
+    <section id="orders" class="page"></section>
+    <section id="history" class="page"></section>
   </div>
 </div>
 
-<!-- JS Imports -->
-<script src="db/database.js"></script>
+<script type="module" src="db/database.js"></script>
+<script type="module" src="model/itemModel.js"></script>
+<script type="module" src="model/customerModel.js"></script>
+<script type="module" src="model/orderModel.js"></script>
+<script type="module" src="controller/itemController.js"></script>
+<script type="module" src="controller/customerController.js"></script>
+<script type="module" src="controller/orderController.js"></script>
+<script type="module" src="controller/dashboardController.js"></script>
 <script type="module" src="js/app.js"></script>
-
 </body>
 </html>
