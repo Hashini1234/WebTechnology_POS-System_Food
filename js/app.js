@@ -2,7 +2,8 @@ import { user } from "../db/database.js";
 import { updateDashboard } from "../controller/dashboardController.js";
 import { renderItems } from "../controller/itemController.js";
 import { renderCustomers } from "../controller/customerController.js";
-import { renderHistory } from "../controller/orderController.js";
+import { renderHistory } from "../controller/order_HistoryController.js";
+import { renderOrders } from "../controller/orderController.js";
 
 const loginBtn = document.getElementById("loginBtn");
 const logoutBtn = document.getElementById("logoutBtn");
@@ -30,7 +31,8 @@ function showPage(id) {
     if (id === "dashboard") updateDashboard();
     if (id === "items") renderItems();
     if (id === "customers") renderCustomers();
-    if (id === "history") renderHistory();
+    if (id === "orders") renderOrders();
+    if (id === "order History") renderHistory();
 }
 
 document.querySelectorAll(".sidebar li").forEach(li => {

@@ -1,15 +1,21 @@
-import { customers, items, orders } from "../db/database.js";
-import { Order } from "../model/orderModel.js";
 
-export function renderHistory() {
-    const section = document.getElementById("history");
-    if (orders.length === 0) {
-        section.innerHTML = `<h2>Order History</h2><p class="text-muted">No orders yet.</p>`;
-        return;
-    }
+export function renderOrders() {
+    console.log("wadadha")
+    const section = document.getElementById("orders");
     section.innerHTML = `
-    <h2>Order History</h2>
-    <table class="table table-dark"><thead><tr><th>Customer</th><th>Item</th><th>Qty</th><th>Total</th></tr></thead>
-    <tbody>${orders.map(o => `<tr><td>${o.customer}</td><td>${o.item}</td><td>${o.qty}</td><td>$${o.total.toFixed(2)}</td></tr>`).join('')}</tbody>
-    </table>`;
+       <!-- ORDERS -->
+                        <h3>Place Order</h3>
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <label>Customer</label>
+                            <select id="orderCustomer" class="form-select mb-2"></select>
+                            <label>Item</label>
+                            <select id="orderItem" class="form-select mb-2"></select>
+                            <label>Quantity</label>
+                            <input id="orderQty" type="number" class="form-control mb-2" min="1">
+                            <button class="btn-main" id="placeOrderBtn">Place Order</button>
+                        </div>
+                    </div>`;
+
+
 }
