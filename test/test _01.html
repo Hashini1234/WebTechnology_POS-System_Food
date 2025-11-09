@@ -1,0 +1,1490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite Eats - Premium Restaurant POS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a1a1a;
+            --secondary: #ff7f00;
+            --accent: #ffdab9;
+            --dark: #000000;
+            --light: #f5f5f5;
+            --gold: #ffbf00;
+            --success: #28a745;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f5f5 0%, #ffdab9 100%);
+            font-family: 'Montserrat', sans-serif;
+            color: var(--primary);
+            overflow-x: hidden;
+        }
+
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                    radial-gradient(circle at 20% 80%, rgba(255, 127, 0, 0.1) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 20%, rgba(255, 191, 0, 0.08) 0%, transparent 50%);
+            z-index: -1;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(1deg); }
+        }
+
+        /* Login Screen */
+        .login-screen {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1350&q=80') center/cover;
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            padding: 3rem;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255, 127, 0, 0.3);
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            background: var(--secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            box-shadow: 0 10px 30px rgba(255, 127, 0, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 10px 30px rgba(255, 127, 0, 0.4); }
+            50% { box-shadow: 0 10px 50px rgba(255, 127, 0, 0.6); }
+            100% { box-shadow: 0 10px 30px rgba(255, 127, 0, 0.4); }
+        }
+
+        .logo i {
+            font-size: 3rem;
+            color: white;
+        }
+
+        .brand-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .tagline {
+            color: var(--secondary);
+            font-weight: 500;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        .form-control {
+            border: 2px solid #e0d6cb;
+            border-radius: 15px;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .form-control:focus {
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 0.2rem rgba(255, 127, 0, 0.25);
+            background: white;
+            outline: none;
+        }
+
+        .btn-login {
+            background: linear-gradient(135deg, var(--secondary), #ffbf00);
+            border: none;
+            border-radius: 15px;
+            padding: 0.75rem;
+            font-weight: 600;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 127, 0, 0.4);
+        }
+
+        .btn-login:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 127, 0, 0.6);
+            background: linear-gradient(135deg, #ffbf00, var(--secondary));
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: linear-gradient(to bottom, var(--primary), var(--dark));
+            padding: 2rem 1.5rem;
+            box-shadow: 5px 0 20px rgba(0,0,0,0.2);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 127, 0, 0.2);
+        }
+
+        .sidebar-logo {
+            width: 80px;
+            height: 80px;
+            background: var(--secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            box-shadow: 0 8px 25px rgba(255, 127, 0, 0.4);
+        }
+
+        .sidebar-logo i {
+            font-size: 2rem;
+            color: white;
+        }
+
+        .sidebar-title {
+            font-family: 'Playfair Display', serif;
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .sidebar-subtitle {
+            color: var(--accent);
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            color: var(--accent);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            position: relative;
+            margin-bottom: 0.5rem;
+            text-decoration: none;
+        }
+
+        .nav-link i {
+            font-size: 1.2rem;
+            margin-right: 1rem;
+            width: 25px;
+            text-align: center;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: rgba(255, 127, 0, 0.2);
+            color: var(--secondary);
+            transform: translateX(5px);
+        }
+
+        .nav-link.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: var(--secondary);
+        }
+
+        .nav-badge {
+            background: var(--secondary);
+            color: white;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+            margin-left: auto;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 127, 0, 0.3);
+        }
+
+        .page-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: var(--secondary);
+            font-weight: 500;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border: 1px solid rgba(255, 127, 0, 0.2);
+            text-align: center;
+            transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .stat-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.8rem;
+            color: white;
+        }
+
+        .stat-sales { background: linear-gradient(135deg, #28a745, #3ac162); }
+        .stat-orders { background: linear-gradient(135deg, #007bff, #0069d9); }
+        .stat-customers { background: linear-gradient(135deg, #6f42c1, #5a32a3); }
+        .stat-items { background: linear-gradient(135deg, #fd7e14, #e66c00); }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            font-family: 'Playfair Display', serif;
+        }
+
+        .stat-label {
+            color: var(--secondary);
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .lux-card {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border: 1px solid rgba(255, 127, 0, 0.2);
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .table {
+            width: 100%;
+            margin-bottom: 0;
+        }
+
+        .table thead {
+            background: linear-gradient(135deg, var(--primary), var(--dark));
+            color: white;
+        }
+
+        .table thead th {
+            border: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            padding: 1rem;
+        }
+
+        .table tbody td {
+            padding: 1rem;
+            vertical-align: middle;
+            border-bottom: 1px solid rgba(255, 127, 0, 0.2);
+        }
+
+        .table tbody tr:hover {
+            background: rgba(255, 127, 0, 0.05);
+        }
+
+        .badge {
+            padding: 0.4rem 0.8rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-paid {
+            background: rgba(40, 167, 69, 0.2);
+            color: var(--success);
+        }
+
+        .badge-unpaid {
+            background: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-sm {
+            padding: 0.3rem 0.6rem;
+            font-size: 0.8rem;
+        }
+
+        .btn-edit { background: var(--secondary); color: white; }
+        .btn-danger { background: #e74c3c; color: white; }
+        .btn-success { background: var(--success); color: white; }
+        .btn-warning { background: #ffc107; color: white; }
+        .btn-secondary { background: #6c757d; color: white; }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .item-card {
+            background: white;
+            border-radius: 20px;
+            padding: 1rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            margin-bottom: 1.5rem;
+        }
+
+        .item-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.18);
+        }
+
+        .category-btn {
+            background: var(--light);
+            border: 1px solid var(--secondary);
+            color: var(--secondary);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+        }
+
+        .category-btn.active {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .category-btn:hover {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .low-stock {
+            color: #e74c3c !important;
+        }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="bg-pattern"></div>
+
+<!-- Login Screen -->
+<div id="loginScreen" class="login-screen">
+    <div class="login-card">
+        <div class="logo-container">
+            <div class="logo">
+                <i class="fas fa-utensils"></i>
+            </div>
+            <h1 class="brand-name">Elite Eats</h1>
+            <p class="tagline">Premium Restaurant Experience</p>
+        </div>
+        <form id="loginForm">
+            <div class="mb-3">
+                <input type="text" class="form-control" id="username" placeholder="Username" required>
+            </div>
+            <div class="mb-4">
+                <input type="password" class="form-control" id="password" placeholder="Password" required>
+            </div>
+            <button type="submit" class="btn btn-login w-100">
+                Enter System
+            </button>
+            <small class="text-muted d-block text-center mt-3">admin / elite123</small>
+        </form>
+    </div>
+</div>
+
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar" style="display: none;">
+    <div class="sidebar-header">
+        <div class="sidebar-logo">
+            <i class="fas fa-utensils"></i>
+        </div>
+        <h3 class="sidebar-title">Elite Eats</h3>
+        <p class="sidebar-subtitle">POS System</p>
+    </div>
+    <nav>
+        <a href="#" class="nav-link active" onclick="app.showSection('dashboard'); return false;">
+            <i class="fas fa-home"></i>
+            <span>Dashboard</span>
+        </a>
+        <a href="#" class="nav-link" onclick="app.showSection('item-management'); return false;">
+            <i class="fas fa-utensils"></i>
+            <span>Menu Items</span>
+        </a>
+        <a href="#" class="nav-link" onclick="app.showSection('customers'); return false;">
+            <i class="fas fa-users"></i>
+            <span>Customers</span>
+        </a>
+        <a href="#" class="nav-link" onclick="app.showSection('pos'); return false;">
+            <i class="fas fa-cash-register"></i>
+            <span>POS Terminal</span>
+            <span class="nav-badge" id="cartBadge">0</span>
+        </a>
+        <a href="#" class="nav-link" onclick="app.showSection('order-history'); return false;">
+            <i class="fas fa-history"></i>
+            <span>Order History</span>
+        </a>
+        <a href="#" class="nav-link" onclick="app.logout(); return false;">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+        </a>
+    </nav>
+</div>
+
+<!-- Main Content -->
+<div class="main-content" id="mainContent" style="display: none;">
+
+    <!-- Dashboard -->
+    <div id="dashboard" style="display: none;">
+        <div class="page-header">
+            <h1 class="page-title">Dashboard</h1>
+            <p class="page-subtitle">Today's Overview</p>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon stat-sales">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="stat-value" id="todaySales">LKR 0.00</div>
+                    <div class="stat-label">Today's Sales</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon stat-orders">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="stat-value" id="todayOrders">0</div>
+                    <div class="stat-label">Today's Orders</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon stat-customers">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-value" id="totalCustomers">0</div>
+                    <div class="stat-label">Total Customers</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon stat-items">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <div class="stat-value" id="menuItemsCount">0</div>
+                    <div class="stat-label">Menu Items</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="lux-card">
+            <h3 class="card-title">Recent Orders</h3>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Items</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+                    <tbody id="recentOrders">
+                    <tr><td colspan="5" class="text-center py-4 text-muted">No orders yet</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Item Management -->
+    <div id="item-management" style="display: none;">
+        <div class="page-header">
+            <h1 class="page-title">Menu Items</h1>
+            <p class="page-subtitle">Manage your restaurant menu</p>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="lux-card">
+                    <h3 class="card-title">Add/Edit Item</h3>
+                    <div class="mb-3">
+                        <label class="form-label">Item ID</label>
+                        <input type="text" class="form-control" id="itemIdDisplay" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Name</label>
+                        <input type="text" class="form-control" id="itemName">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Category</label>
+                        <select class="form-control" id="itemCategory">
+                            <option value="">Select Category</option>
+                            <option value="Appetizer">Appetizer</option>
+                            <option value="Main Course">Main Course</option>
+                            <option value="Dessert">Dessert</option>
+                            <option value="Beverage">Beverage</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Price (LKR)</label>
+                        <input type="number" class="form-control" id="itemPrice" step="0.01">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Stock</label>
+                        <input type="number" class="form-control" id="itemStock">
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-success flex-fill" onclick="app.itemController.addItem()">
+                            <i class="fas fa-plus"></i> Add
+                        </button>
+                        <button class="btn btn-edit flex-fill" id="updateBtn" style="display: none;" onclick="app.itemController.updateItem()">
+                            <i class="fas fa-save"></i> Update
+                        </button>
+                        <button class="btn btn-danger flex-fill" id="deleteBtn" style="display: none;" onclick="app.itemController.deleteItem()">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                        <button class="btn btn-secondary flex-fill" onclick="app.itemController.clearForm()">
+                            <i class="fas fa-times"></i> Clear
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="lux-card">
+                    <h3 class="card-title">All Menu Items</h3>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Stock</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody id="itemsTable">
+                            <tr><td colspan="7" class="text-center py-4 text-muted">No items yet</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Customers -->
+    <div id="customers" style="display: none;">
+        <div class="page-header">
+            <h1 class="page-title">Customers</h1>
+            <p class="page-subtitle">Manage customer information</p>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="lux-card">
+                    <h3 class="card-title">Add/Edit Customer</h3>
+                    <div class="mb-3">
+                        <label class="form-label">Customer ID</label>
+                        <input type="text" class="form-control" id="customerIdDisplay" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Name</label>
+                        <input type="text" class="form-control" id="customerName">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" id="customerEmail">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Phone</label>
+                        <input type="tel" class="form-control" id="customerPhone">
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-success flex-fill" onclick="app.customerController.addCustomer()">
+                            <i class="fas fa-plus"></i> Add
+                        </button>
+                        <button class="btn btn-edit flex-fill" id="updateCustomerBtn" style="display: none;" onclick="app.customerController.updateCustomer()">
+                            <i class="fas fa-save"></i> Update
+                        </button>
+                        <button class="btn btn-danger flex-fill" id="deleteCustomerBtn" style="display: none;" onclick="app.customerController.deleteCustomer()">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                        <button class="btn btn-secondary flex-fill" onclick="app.customerController.clearForm()">
+                            <i class="fas fa-times"></i> Clear
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="lux-card">
+                    <h3 class="card-title">All Customers</h3>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Orders</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody id="customersTable">
+                            <tr><td colspan="6" class="text-center py-4 text-muted">No customers yet</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- POS Terminal -->
+    <div id="pos" style="display: none;">
+        <div class="page-header">
+            <h1 class="page-title">POS Terminal</h1>
+            <p class="page-subtitle">Place new orders</p>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="mb-3" id="categoryFilters">
+                    <button class="category-btn active" onclick="app.orderController.filterMenu('All')">All</button>
+                    <button class="category-btn" onclick="app.orderController.filterMenu('Appetizer')">Appetizers</button>
+                    <button class="category-btn" onclick="app.orderController.filterMenu('Main Course')">Main Courses</button>
+                    <button class="category-btn" onclick="app.orderController.filterMenu('Dessert')">Desserts</button>
+                    <button class="category-btn" onclick="app.orderController.filterMenu('Beverage')">Beverages</button>
+                </div>
+
+                <div class="row" id="menuGrid">
+                    <!-- Menu items will be loaded here -->
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="lux-card" style="position: sticky; top: 2rem;">
+                    <h3 class="card-title">Current Order</h3>
+
+                    <div class="mb-3">
+                        <label class="form-label">Customer</label>
+                        <select class="form-control" id="customerSelect">
+                            <option value="">Walk-in Customer</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Discount (%)</label>
+                        <input type="number" class="form-control" id="discountPercent" value="0" min="0" max="100" onchange="app.orderController.updateCartDisplay()">
+                    </div>
+
+                    <div id="cartItems" style="max-height: 300px; overflow-y: auto; margin-bottom: 1rem;">
+                        <div class="text-center py-5 text-muted">
+                            <i class="fas fa-shopping-cart fa-4x mb-3 opacity-50"></i>
+                            <p>Your cart is empty</p>
+                        </div>
+                    </div>
+
+                    <div class="border-top pt-3">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Subtotal:</span>
+                            <strong id="subtotal">LKR 0.00</strong>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Tax (8%):</span>
+                            <strong id="taxAmount">LKR 0.00</strong>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span class="fw-bold">Total:</span>
+                            <strong class="text-success fs-5" id="orderTotal">LKR 0.00</strong>
+                        </div>
+                        <button class="btn btn-success w-100" id="placeOrderBtn" onclick="app.orderController.placeOrder()" disabled>
+                            <i class="fas fa-check"></i> Place Order
+                        </button>
+                        <button class="btn btn-secondary w-100 mt-2" onclick="app.orderController.clearCart()">
+                            <i class="fas fa-trash"></i> Clear Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order History -->
+    <div id="order-history" style="display: none;">
+        <div class="page-header">
+            <h1 class="page-title">Order History</h1>
+            <p class="page-subtitle">View all past orders</p>
+        </div>
+
+        <div class="lux-card">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Date & Time</th>
+                        <th>Customer</th>
+                        <th>Items</th>
+                        <th>Total</th>
+                        <th>Discount</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody id="historyTable">
+                    <tr><td colspan="8" class="text-center py-5 text-muted">No orders yet</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Database
+    let db = {
+        menuItems: [
+            { id: 'I001', name: 'Bruschetta', category: 'Appetizer', price: 500, stock: 30, image: 'https://images.unsplash.com/photo-1594005758584-a334daee074c?auto=format&fit=crop&w=500&q=80' },
+            { id: 'I002', name: 'Grilled Chicken', category: 'Main Course', price: 1200, stock: 20, image: 'https://images.unsplash.com/photo-1600554120520-200170849ae5?auto=format&fit=crop&w=500&q=80' },
+            { id: 'I003', name: 'Tiramisu', category: 'Dessert', price: 600, stock: 15, image: 'https://images.unsplash.com/photo-1567604133954-61e0c4b63e00?auto=format&fit=crop&w=500&q=80' },
+            { id: 'I004', name: 'Cola', category: 'Beverage', price: 200, stock: 50, image: 'https://images.unsplash.com/photo-1629203849820-16ac2a677c32?auto=format&fit=crop&w=500&q=80' },
+            { id: 'I005', name: 'Caesar Salad', category: 'Appetizer', price: 450, stock: 25, image: 'https://images.unsplash.com/photo-1546793665-c74683f339c1?auto=format&fit=crop&w=500&q=80' },
+            { id: 'I006', name: 'Steak', category: 'Main Course', price: 1800, stock: 10, image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=500&q=80' }
+        ],
+        customers: [
+            { id: 'C001', name: 'Nimal Perera', email: 'nimal@mail.com', phone: '0771234567' },
+            { id: 'C002', name: 'Kamala Silva', email: 'kamala@mail.com', phone: '0719876543' }
+        ],
+        orders: [],
+        cart: []
+    };
+
+    // DTOs
+    class ItemDTO {
+        constructor(id, name, category, price, stock, image) {
+            this.id = id;
+            this.name = name;
+            this.category = category;
+            this.price = price;
+            this.stock = stock;
+            this.image = image || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=500&q=80';
+        }
+    }
+
+    class CustomerDTO {
+        constructor(id, name, email, phone) {
+            this.id = id;
+            this.name = name;
+            this.email = email;
+            this.phone = phone;
+        }
+    }
+
+    class OrderDTO {
+        constructor(id, date, customerId, items, subtotal, discountPercent, tax, total, status) {
+            this.id = id;
+            this.date = date;
+            this.customerId = customerId;
+            this.items = items;
+            this.subtotal = subtotal;
+            this.discountPercent = discountPercent;
+            this.tax = tax;
+            this.total = total;
+            this.status = status;
+        }
+    }
+
+    // Models
+    class ItemModel {
+        static getAllItems() { return db.menuItems; }
+        static getItemById(id) { return db.menuItems.find(i => i.id === id); }
+        static addItem(itemDTO) {
+            const currentMaxId = db.menuItems.reduce((max, item) => {
+                const num = parseInt(item.id.substring(1));
+                return num > max ? num : max;
+            }, 0);
+            const newId = 'I' + String(currentMaxId + 1).padStart(3, '0');
+            const newItem = new ItemDTO(newId, itemDTO.name, itemDTO.category, itemDTO.price, itemDTO.stock, itemDTO.image);
+            db.menuItems.push(newItem);
+            return newItem;
+        }
+        static updateItem(itemDTO) {
+            const index = db.menuItems.findIndex(i => i.id === itemDTO.id);
+            if (index !== -1) {
+                const existingItem = db.menuItems[index];
+                db.menuItems[index] = { ...existingItem, ...itemDTO };
+                return true;
+            }
+            return false;
+        }
+        static deleteItem(id) {
+            const initialLength = db.menuItems.length;
+            db.menuItems = db.menuItems.filter(i => i.id !== id);
+            return db.menuItems.length < initialLength;
+        }
+        static deductStock(itemId, quantity) {
+            const item = ItemModel.getItemById(itemId);
+            if (item && item.stock >= quantity) {
+                item.stock -= quantity;
+                return true;
+            }
+            return false;
+        }
+    }
+
+    class CustomerModel {
+        static getAllCustomers() { return db.customers; }
+        static getCustomerById(id) { return db.customers.find(c => c.id === id); }
+        static addCustomer(customerDTO) {
+            const newId = 'C' + String(db.customers.length + 1).padStart(3, '0');
+            const newCustomer = new CustomerDTO(newId, customerDTO.name, customerDTO.email, customerDTO.phone);
+            db.customers.push(newCustomer);
+            return newCustomer;
+        }
+        static updateCustomer(customerDTO) {
+            const index = db.customers.findIndex(c => c.id === customerDTO.id);
+            if (index !== -1) {
+                db.customers[index] = customerDTO;
+                return true;
+            }
+            return false;
+        }
+        static deleteCustomer(id) {
+            const hasOrders = db.orders.some(o => o.customerId === id);
+            if (hasOrders) return false;
+            const initialLength = db.customers.length;
+            db.customers = db.customers.filter(c => c.id !== id);
+            return db.customers.length < initialLength;
+        }
+    }
+
+    class OrderModel {
+        static getAllOrders() { return db.orders; }
+        static getOrderById(id) { return db.orders.find(o => o.id === id); }
+        static getCart() { return db.cart; }
+        static setCart(cart) { db.cart = cart; }
+        static createOrder(orderDTO) {
+            const currentMaxId = db.orders.reduce((max, order) => {
+                const num = parseInt(order.id.substring(1));
+                return num > max ? num : max;
+            }, 0);
+            const newId = 'O' + String(currentMaxId + 1).padStart(3, '0');
+            const newOrder = new OrderDTO(newId, new Date(), orderDTO.customerId, orderDTO.items, orderDTO.subtotal, orderDTO.discountPercent, orderDTO.tax, orderDTO.total, 'Paid');
+            db.orders.push(newOrder);
+            return newOrder;
+        }
+    }
+
+    // Controllers
+    class ItemController {
+        constructor() {
+            this.editingItemId = null;
+        }
+        loadItemsTable() {
+            const menuItems = ItemModel.getAllItems();
+            const tbody = document.getElementById('itemsTable');
+            tbody.innerHTML = '';
+            menuItems.forEach(item => {
+                const statusClass = item.stock < 10 ? 'low-stock' : '';
+                const statusBadge = item.stock > 0
+                    ? '<span class="badge" style="background: rgba(40, 167, 69, 0.2); color: var(--success);">Available</span>'
+                    : '<span class="badge badge-unpaid">Out of Stock</span>';
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+        <td>${item.id}</td>
+        <td><strong>${item.name}</strong></td>
+        <td>${item.category}</td>
+        <td>LKR ${item.price.toFixed(2)}</td>
+        <td class="${statusClass}">${item.stock}</td>
+        <td>${statusBadge}</td>
+        <td>
+          <button class="btn btn-sm btn-edit" onclick="app.itemController.editItem('${item.id}')">
+            <i class="fas fa-edit"></i>
+          </button>
+        </td>
+      `;
+                tbody.appendChild(tr);
+            });
+        }
+        addItem() {
+            const name = document.getElementById('itemName').value.trim();
+            const price = parseFloat(document.getElementById('itemPrice').value);
+            const stock = parseInt(document.getElementById('itemStock').value);
+            const category = document.getElementById('itemCategory').value;
+            if (!name || isNaN(price) || isNaN(stock) || !category || price <= 0 || stock < 0) {
+                alert('Please fill all fields correctly.');
+                return;
+            }
+            const itemDTO = new ItemDTO(null, name, category, price, stock);
+            ItemModel.addItem(itemDTO);
+            this.loadItemsTable();
+            this.clearForm();
+            app.updateDashboardStats();
+            alert('Menu item added successfully!');
+        }
+        editItem(id) {
+            const item = ItemModel.getItemById(id);
+            if (item) {
+                this.editingItemId = id;
+                document.getElementById('itemIdDisplay').value = item.id;
+                document.getElementById('itemName').value = item.name;
+                document.getElementById('itemPrice').value = item.price;
+                document.getElementById('itemStock').value = item.stock;
+                document.getElementById('itemCategory').value = item.category;
+                document.getElementById('updateBtn').style.display = 'inline-block';
+                document.getElementById('deleteBtn').style.display = 'inline-block';
+            }
+        }
+        updateItem() {
+            if (!this.editingItemId) return;
+            const name = document.getElementById('itemName').value.trim();
+            const price = parseFloat(document.getElementById('itemPrice').value);
+            const stock = parseInt(document.getElementById('itemStock').value);
+            const category = document.getElementById('itemCategory').value;
+            if (!name || isNaN(price) || isNaN(stock) || !category || price <= 0 || stock < 0) {
+                alert('Please fill all fields correctly.');
+                return;
+            }
+            const item = ItemModel.getItemById(this.editingItemId);
+            const itemDTO = new ItemDTO(this.editingItemId, name, category, price, stock, item.image);
+            if (ItemModel.updateItem(itemDTO)) {
+                this.loadItemsTable();
+                this.clearForm();
+                alert('Menu item updated!');
+            } else {
+                alert('Update failed.');
+            }
+        }
+        deleteItem() {
+            if (!this.editingItemId) return;
+            if (confirm('Are you sure you want to delete this item?')) {
+                if (ItemModel.deleteItem(this.editingItemId)) {
+                    this.loadItemsTable();
+                    this.clearForm();
+                    app.updateDashboardStats();
+                    alert('Menu item deleted.');
+                } else {
+                    alert('Deletion failed.');
+                }
+            }
+        }
+        clearForm() {
+            this.editingItemId = null;
+            document.getElementById('itemIdDisplay').value = '';
+            document.getElementById('itemName').value = '';
+            document.getElementById('itemPrice').value = '';
+            document.getElementById('itemStock').value = '';
+            document.getElementById('itemCategory').value = '';
+            document.getElementById('updateBtn').style.display = 'none';
+            document.getElementById('deleteBtn').style.display = 'none';
+        }
+    }
+
+    class CustomerController {
+        constructor() {
+            this.editingCustomerId = null;
+        }
+        loadCustomersTable() {
+            const customers = CustomerModel.getAllCustomers();
+            const tbody = document.getElementById('customersTable');
+            tbody.innerHTML = '';
+            if (customers.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-muted">No customers yet</td></tr>';
+                return;
+            }
+            customers.forEach(customer => {
+                const customerOrders = OrderModel.getAllOrders().filter(o => o.customerId === customer.id);
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+        <td>${customer.id}</td>
+        <td><strong>${customer.name}</strong></td>
+        <td>${customer.email}</td>
+        <td>${customer.phone}</td>
+        <td>${customerOrders.length}</td>
+        <td>
+          <button class="btn btn-sm btn-edit" onclick="app.customerController.editCustomer('${customer.id}')">
+            <i class="fas fa-edit"></i>
+          </button>
+        </td>
+      `;
+                tbody.appendChild(tr);
+            });
+        }
+        loadCustomerSelect() {
+            const select = document.getElementById('customerSelect');
+            select.innerHTML = '<option value="">Walk-in Customer</option>';
+            CustomerModel.getAllCustomers().forEach(customer => {
+                const option = document.createElement('option');
+                option.value = customer.id;
+                option.textContent = `${customer.name} (${customer.phone})`;
+                select.appendChild(option);
+            });
+        }
+        addCustomer() {
+            const name = document.getElementById('customerName').value.trim();
+            const email = document.getElementById('customerEmail').value.trim();
+            const phone = document.getElementById('customerPhone').value.trim();
+            if (!name || !email || !phone) {
+                alert('Please fill all fields.');
+                return;
+            }
+            if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+                alert('Invalid email format.');
+                return;
+            }
+            if (!phone.match(/^\d{10}$/)) {
+                alert('Phone must be 10 digits.');
+                return;
+            }
+            if (CustomerModel.getAllCustomers().some(c => c.email === email || c.phone === phone)) {
+                alert('Customer with this email or phone already exists.');
+                return;
+            }
+            const customerDTO = new CustomerDTO(null, name, email, phone);
+            CustomerModel.addCustomer(customerDTO);
+            this.loadCustomersTable();
+            this.loadCustomerSelect();
+            this.clearForm();
+            app.updateDashboardStats();
+            alert('Customer added successfully!');
+        }
+        editCustomer(id) {
+            const customer = CustomerModel.getCustomerById(id);
+            if (customer) {
+                this.editingCustomerId = id;
+                document.getElementById('customerIdDisplay').value = customer.id;
+                document.getElementById('customerName').value = customer.name;
+                document.getElementById('customerEmail').value = customer.email;
+                document.getElementById('customerPhone').value = customer.phone;
+                document.getElementById('updateCustomerBtn').style.display = 'inline-block';
+                document.getElementById('deleteCustomerBtn').style.display = 'inline-block';
+            }
+        }
+        updateCustomer() {
+            if (!this.editingCustomerId) return;
+            const name = document.getElementById('customerName').value.trim();
+            const email = document.getElementById('customerEmail').value.trim();
+            const phone = document.getElementById('customerPhone').value.trim();
+            if (!name || !email || !phone) {
+                alert('Please fill all fields.');
+                return;
+            }
+            const existing = CustomerModel.getAllCustomers().find(c => (c.email === email || c.phone === phone) && c.id !== this.editingCustomerId);
+            if (existing) {
+                alert('Another customer with this email or phone exists.');
+                return;
+            }
+            const customerDTO = new CustomerDTO(this.editingCustomerId, name, email, phone);
+            if (CustomerModel.updateCustomer(customerDTO)) {
+                this.loadCustomersTable();
+                this.loadCustomerSelect();
+                this.clearForm();
+                app.updateDashboardStats();
+                alert('Customer updated!');
+            } else {
+                alert('Update failed.');
+            }
+        }
+        deleteCustomer() {
+            if (!this.editingCustomerId) return;
+            if (confirm('Delete this customer? This cannot be undone.')) {
+                if (CustomerModel.deleteCustomer(this.editingCustomerId)) {
+                    this.loadCustomersTable();
+                    this.loadCustomerSelect();
+                    this.clearForm();
+                    app.updateDashboardStats();
+                    alert('Customer deleted.');
+                } else {
+                    alert('Cannot delete customer with existing orders.');
+                }
+            }
+        }
+        clearForm() {
+            this.editingCustomerId = null;
+            document.getElementById('customerIdDisplay').value = '';
+            document.getElementById('customerName').value = '';
+            document.getElementById('customerEmail').value = '';
+            document.getElementById('customerPhone').value = '';
+            document.getElementById('updateCustomerBtn').style.display = 'none';
+            document.getElementById('deleteCustomerBtn').style.display = 'none';
+        }
+    }
+
+    class OrderController {
+        constructor() {
+            this.TAX_RATE = 0.08;
+        }
+        loadPOS() {
+            this.filterMenu('All');
+            this.updateCartDisplay();
+            app.customerController.loadCustomerSelect();
+        }
+        filterMenu(category) {
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                const btnText = btn.textContent.trim();
+                const isActive = (category === 'All' && btnText === 'All') || (btnText.includes(category) && category !== 'All');
+                btn.classList.toggle('active', isActive);
+            });
+            const grid = document.getElementById('menuGrid');
+            grid.innerHTML = '';
+            const allItems = ItemModel.getAllItems();
+            const filteredItems = category === 'All' ? allItems : allItems.filter(item => item.category === category);
+            filteredItems.forEach(item => {
+                const currentItem = ItemModel.getItemById(item.id);
+                if (currentItem && currentItem.stock > 0) {
+                    const col = document.createElement('div');
+                    col.className = 'col-md-6 col-lg-4';
+                    col.innerHTML = `
+          <div class="item-card" onclick="app.orderController.addToCart('${currentItem.id}')">
+            <img src="${currentItem.image || 'https://via.placeholder.com/150'}" alt="${currentItem.name}" class="img-fluid rounded mb-3" style="height: 120px; width: 100%; object-fit: cover;">
+            <h5 class="mb-1">${currentItem.name}</h5>
+            <p class="text-muted small">${currentItem.category}</p>
+            <h6 class="text-warning">LKR ${currentItem.price.toFixed(2)}</h6>
+            <span class="badge ${currentItem.stock < 5 ? 'badge-unpaid' : 'badge-paid'}">${currentItem.stock} left</span>
+          </div>
+        `;
+                    grid.appendChild(col);
+                }
+            });
+        }
+        addToCart(itemId) {
+            const item = ItemModel.getItemById(itemId);
+            let cart = OrderModel.getCart();
+            if (!item || item.stock <= 0) {
+                alert('Sorry, this item is out of stock!');
+                return;
+            }
+            const existing = cart.find(c => c.item.id === itemId);
+            if (existing) {
+                if (existing.quantity + 1 > item.stock) {
+                    alert(`Only ${item.stock} ${item.name}(s) available!`);
+                    return;
+                }
+                existing.quantity++;
+            } else {
+                cart.push({ item: { id: item.id, name: item.name, price: item.price, stock: item.stock }, quantity: 1 });
+            }
+            OrderModel.setCart(cart);
+            this.updateCartDisplay();
+        }
+        updateCartDisplay() {
+            const cart = OrderModel.getCart();
+            const container = document.getElementById('cartItems');
+            const subtotalEl = document.getElementById('subtotal');
+            const taxEl = document.getElementById('taxAmount');
+            const totalEl = document.getElementById('orderTotal');
+            const badge = document.getElementById('cartBadge');
+            const placeBtn = document.getElementById('placeOrderBtn');
+            const discountInput = document.getElementById('discountPercent');
+            let discountPercent = parseFloat(discountInput.value);
+            if (isNaN(discountPercent) || discountPercent < 0 || discountPercent > 100) {
+                discountInput.value = '0';
+                discountPercent = 0;
+            }
+            if (cart.length === 0) {
+                container.innerHTML = `<div class="text-center py-5 text-muted"><i class="fas fa-shopping-cart fa-4x mb-3 opacity-50"></i><p>Your cart is empty</p></div>`;
+                subtotalEl.textContent = 'LKR 0.00';
+                taxEl.textContent = 'LKR 0.00';
+                totalEl.textContent = 'LKR 0.00';
+                badge.textContent = '0';
+                placeBtn.disabled = true;
+                return;
+            }
+            let subtotal = 0;
+            container.innerHTML = '';
+            cart.forEach((entry, index) => {
+                const itemTotal = entry.item.price * entry.quantity;
+                subtotal += itemTotal;
+                const div = document.createElement('div');
+                div.className = 'd-flex justify-content-between align-items-center py-3 border-bottom';
+                div.innerHTML = `
+        <div>
+          <strong>${entry.item.name}</strong>
+          <small class="text-muted d-block">LKR ${entry.item.price.toFixed(2)} × ${entry.quantity}</small>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+          <strong>LKR ${itemTotal.toFixed(2)}</strong>
+          <button class="btn btn-sm btn-danger" onclick="app.orderController.removeFromCart(${index})">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+      `;
+                container.appendChild(div);
+            });
+            const discountAmount = subtotal * (discountPercent / 100);
+            const taxable = subtotal - discountAmount;
+            const tax = taxable * this.TAX_RATE;
+            const grandTotal = taxable + tax;
+            subtotalEl.textContent = `LKR ${subtotal.toFixed(2)}`;
+            taxEl.textContent = `LKR ${tax.toFixed(2)}`;
+            totalEl.textContent = `LKR ${grandTotal.toFixed(2)}`;
+            badge.textContent = cart.reduce((s, c) => s + c.quantity, 0);
+            placeBtn.disabled = false;
+        }
+        removeFromCart(index) {
+            let cart = OrderModel.getCart();
+            cart.splice(index, 1);
+            OrderModel.setCart(cart);
+            this.updateCartDisplay();
+        }
+        clearCart() {
+            OrderModel.setCart([]);
+            document.getElementById('discountPercent').value = '0';
+            this.updateCartDisplay();
+        }
+        placeOrder() {
+            const cart = OrderModel.getCart();
+            if (cart.length === 0) {
+                alert('Cart is empty!');
+                return;
+            }
+            for (let entry of cart) {
+                const item = ItemModel.getItemById(entry.item.id);
+                if (!item || entry.quantity > item.stock) {
+                    alert(`Not enough stock for ${entry.item.name}\nAvailable: ${item ? item.stock : 0}`);
+                    return;
+                }
+            }
+            cart.forEach(entry => ItemModel.deductStock(entry.item.id, entry.quantity));
+            const discountPercent = parseFloat(document.getElementById('discountPercent').value) || 0;
+            const subtotal = cart.reduce((s, e) => s + e.item.price * e.quantity, 0);
+            const discountAmount = subtotal * (discountPercent / 100);
+            const taxable = subtotal - discountAmount;
+            const tax = taxable * this.TAX_RATE;
+            const total = taxable + tax;
+            const orderDTO = new OrderDTO(null, new Date().toISOString(), document.getElementById('customerSelect').value || null, cart.map(e => ({ itemId: e.item.id, quantity: e.quantity, price: e.item.price })), subtotal, discountPercent, tax, total, 'Paid');
+            const newOrder = OrderModel.createOrder(orderDTO);
+            alert(`Order ${newOrder.id} Placed Successfully!\nTotal: LKR ${total.toFixed(2)}`);
+            this.clearCart();
+            app.updateDashboardStats();
+            this.filterMenu('All');
+        }
+        loadOrderHistory() {
+            const orders = OrderModel.getAllOrders().slice().reverse();
+            const customers = CustomerModel.getAllCustomers();
+            const tbody = document.getElementById('historyTable');
+            tbody.innerHTML = orders.length === 0 ? '<tr><td colspan="8" class="text-center py-5 text-muted">No orders yet</td></tr>' : '';
+            orders.forEach(order => {
+                const customer = customers.find(c => c.id === order.customerId);
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+        <td><strong>${order.id}</strong></td>
+        <td>${new Date(order.date).toLocaleString()}</td>
+        <td>${customer?.name || 'Walk-in'}</td>
+        <td>${order.items.length} items</td>
+        <td><strong>LKR ${order.total.toFixed(2)}</strong></td>
+        <td>${order.discountPercent}%</td>
+        <td><span class="badge ${order.status === 'Paid' ? 'badge-paid' : 'badge-unpaid'}">${order.status}</span></td>
+        <td>
+          <button class="btn btn-sm btn-warning" onclick="app.orderController.viewOrder('${order.id}')">
+            <i class="fas fa-eye"></i>
+          </button>
+        </td>
+      `;
+                tbody.appendChild(tr);
+            });
+        }
+        viewOrder(id) {
+            const order = OrderModel.getOrderById(id);
+            if (!order) return;
+            const customer = CustomerModel.getCustomerById(order.customerId);
+            let items = '';
+            order.items.forEach(i => {
+                const item = ItemModel.getItemById(i.itemId);
+                items += `${item?.name || 'Unknown'} × ${i.quantity} = LKR ${(i.price * i.quantity).toFixed(2)}\n`;
+            });
+            const discountAmt = order.subtotal * (order.discountPercent / 100);
+            alert(`ORDER ${order.id}\nDate: ${new Date(order.date).toLocaleString()}\nCustomer: ${customer?.name || 'Walk-in'}\n\nItems:\n${items}\nSubtotal: LKR ${order.subtotal.toFixed(2)}\nDiscount: ${order.discountPercent}% (-LKR ${discountAmt.toFixed(2)})\nTax (8%): LKR ${order.tax.toFixed(2)}\nTOTAL: LKR ${order.total.toFixed(2)}\nStatus: ${order.status}`);
+        }
+    }
+
+    // Main App
+    const app = {};
+    app.init = function() {
+        app.customerController = new CustomerController();
+        app.itemController = new ItemController();
+        app.orderController = new OrderController();
+        document.getElementById('loginForm').addEventListener('submit', app.login);
+    };
+
+    app.login = function(e) {
+        e.preventDefault();
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value.trim();
+        if (username === 'admin' && password === 'elite123') {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('sidebar').style.display = 'block';
+            document.getElementById('mainContent').style.display = 'block';
+            app.customerController.loadCustomerSelect();
+            app.showSection('dashboard');
+        } else {
+            alert('Invalid credentials! Use: admin / elite123');
+        }
+    };
+
+    app.logout = function() {
+        document.getElementById('loginScreen').style.display = 'flex';
+        document.getElementById('sidebar').style.display = 'none';
+        document.getElementById('mainContent').style.display = 'none';
+        document.getElementById('username').value = '';
+        document.getElementById('password').value = '';
+    };
+
+    app.showSection = function(section) {
+        const sections = ['dashboard', 'item-management', 'pos', 'order-history', 'customers'];
+        for (const s of sections) {
+            const element = document.getElementById(s);
+            if (element) {
+                element.style.display = s === section ? 'block' : 'none';
+            }
+        }
+        document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+        const activeLink = document.querySelector(`.nav-link[onclick*="showSection('${section}')"]`);
+        if (activeLink) activeLink.classList.add('active');
+        switch (section) {
+            case 'dashboard': app.updateDashboardStats(); break;
+            case 'item-management': app.itemController.loadItemsTable(); break;
+            case 'pos': app.orderController.loadPOS(); break;
+            case 'order-history': app.orderController.loadOrderHistory(); break;
+            case 'customers': app.customerController.loadCustomersTable(); break;
+        }
+    };
+
+    app.updateDashboardStats = function() {
+        const today = new Date().toDateString();
+        const allOrders = OrderModel.getAllOrders();
+        const allCustomers = CustomerModel.getAllCustomers();
+        const allItems = ItemModel.getAllItems();
+        const todayOrders = allOrders.filter(o => new Date(o.date).toDateString() === today);
+        const todaySales = todayOrders.reduce((sum, o) => sum + o.total, 0);
+        document.getElementById('todaySales').textContent = `LKR ${todaySales.toFixed(2)}`;
+        document.getElementById('todayOrders').textContent = todayOrders.length;
+        document.getElementById('totalCustomers').textContent = allCustomers.length;
+        document.getElementById('menuItemsCount').textContent = allItems.length;
+        const recent = allOrders.slice(-5).reverse();
+        const tbody = document.getElementById('recentOrders');
+        tbody.innerHTML = '';
+        if (recent.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-muted">No orders yet</td></tr>';
+        } else {
+            recent.forEach(order => {
+                const customer = allCustomers.find(c => c.id === order.customerId);
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+        <td><strong>${order.id}</strong></td>
+        <td>${customer ? customer.name : 'Walk-in'}</td>
+        <td>${order.items.length} item${order.items.length > 1 ? 's' : ''}</td>
+        <td><strong>LKR ${order.total.toFixed(2)}</strong></td>
+        <td><span class="badge ${order.status === 'Paid' ? 'badge-paid' : 'badge-unpaid'}">${order.status}</span></td>
+      `;
+                tbody.appendChild(tr);
+            });
+        }
+    };
+
+    window.app = app;
+    document.addEventListener('DOMContentLoaded', () => app.init());
+</script>
+</body>
+</html>
