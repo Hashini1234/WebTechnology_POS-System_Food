@@ -113,14 +113,12 @@ export function renderOrders() {
 
         const total = item.price * qty;
 
-        // Sequential ID based on orderHistory length
-        const id = orderHistory.length + 1;
+        const order = new Order(null, customer, itemName, qty, total); // id will be assigned below
 
-        const order = new Order(id, customer, itemName, qty, total);
+        addToOrderHistory(order);  // auto-assigns sequential ID
         orders.push(order);
-        addToOrderHistory(order);
 
-        // Reduce item quantity
+        // Reduce item qty
         item.qty -= qty;
 
         orderQty.value = "";
@@ -128,6 +126,7 @@ export function renderOrders() {
         loadItems();
         alert("Order placed successfully!");
     });
+
 
     // Delete order function
     window.deleteOrder = id => {
