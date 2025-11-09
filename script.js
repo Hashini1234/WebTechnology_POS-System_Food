@@ -15,6 +15,7 @@ app.init = function() {
 
 app.login = function(e) {
     e.preventDefault();
+
     const username = document.getElementById('username').value.trim().toLowerCase();
     const password = document.getElementById('password').value.trim();
 
