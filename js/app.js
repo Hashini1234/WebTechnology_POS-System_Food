@@ -28,11 +28,12 @@ logoutBtn.onclick = () => {
 function showPage(id) {
     document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
     document.getElementById(id).classList.add("active");
+
     if (id === "dashboard") updateDashboard();
     if (id === "items") renderItems();
     if (id === "customers") renderCustomers();
     if (id === "orders") renderOrders();
-    if (id === "order History") renderHistory();
+    if (id === "history") renderHistory(); // Fixed: changed from "order History" to "history"
 }
 
 document.querySelectorAll(".sidebar li").forEach(li => {
