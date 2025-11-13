@@ -775,3 +775,19 @@ body {
         margin-bottom: 1.5rem;
     }
 }
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+    .dash-card {
+        height: 220px;
+    }
+    .dash-card img {
+        height: 100px;
+    }
+    .menu-card {
+        width: 160px;
+    }
+    .menu-img {
+        height: 120px;
+    }
+}
